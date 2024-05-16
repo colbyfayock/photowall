@@ -4,6 +4,8 @@ import { getFolderConfig, getSubFolders } from '@/lib/cloudinary';
 
 import Container from '@/components/Container';
 
+export const revalidate = 60 * 5;
+
 export default async function Home() {
   const { folders } = await getSubFolders('photowall');
 

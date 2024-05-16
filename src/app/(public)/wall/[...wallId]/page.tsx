@@ -2,6 +2,8 @@ import Container from "@/components/Container";
 import CldImage from "@/components/CldImage";
 import { getResourcesByFolder, getFolderConfig } from "@/lib/cloudinary";
 
+export const revalidate = 60 * 5;
+
 export default async function Wall({ params }: { params: { wallId: string } }) {
   const [config, { resources }] = await Promise.all([
     await getFolderConfig(params.wallId),
