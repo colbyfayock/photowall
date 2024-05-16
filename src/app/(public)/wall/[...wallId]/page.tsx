@@ -47,6 +47,7 @@ export default async function Wall({ params }: { params: { wallId: string } }) {
                     type: 'fill'
                   }}
                   alt=""
+                  sizes="(min-width: 768) 33.33vw, 50vw"
                 />
               </WithLightbox>
             </li>
