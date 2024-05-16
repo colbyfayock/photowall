@@ -52,7 +52,8 @@ export async function getResourcesByFolder(folderName: string, options?: GetReso
     const { resources } = await cloudinary.api.resources({
       type: 'upload',
       prefix: `photowall/${folderName}`,
-      resource_type: resourceType
+      resource_type: resourceType,
+      max_results: 400
     });
     return {
       resources: resources as unknown as Array<CloudinaryResource>
