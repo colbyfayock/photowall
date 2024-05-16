@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <Container className="mt-12">
-      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {foldersWithConfig.map((folder) => {
           return (
             <li key={folder.name}>
