@@ -19,6 +19,7 @@
     "next-cloudinary": "^6.5.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-modal-image": "^2.6.0",
     "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
