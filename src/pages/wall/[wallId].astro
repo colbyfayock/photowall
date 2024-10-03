@@ -1,0 +1,53 @@
+---
+import Container from '@/components/Container.astro';
+import Layout from '@/layouts/Layout.astro';
+import { getFolderConfig } from '@/lib/cloudinary';
+import { CldImage } from 'astro-cloudinary';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const assets = await getCollection('assets');
+  const folders = Array.from(new Set(assets.map(({ data }) => data.folder.replace('photowall/', ''))));
+  return folders.map(folder => {
+    return {
+      params: {
+        wallId: folder.replace('photowall/', '')
+      }
+    }
+  });
+}
+
+const { wallId } = Astro.params;
+
+const resources = await getCollection('assets', ({ data }) => data.folder.replace('photowall/', '') === wallId);
+
+const config = await getFolderConfig(`photowall/${wallId}`);
+---
+<Layout title={`${config?.name || wallId} - Photowall`}>
+  <Container class="mt-12">
+    <header class="mb-12">
+      <h1 class="text-5xl font-bold mb-12">
+        { config?.name || wallId }
+      </h1>
+    </header>
+    <ul class="grid grid-cols-2 md:grid-cols-3 gap-5">
+      {resources.map(({ data: resource }) => {
+        return (
+          <li>  
+            <CldImage
+              width={1200}
+              height={1200}
+              src={resource.public_id}
+              crop={{
+                source: true,
+                type: 'auto'
+              }}
+              alt=""
+              sizes="(min-width: 768px) 33.33vw, 50vw"
+            />
+          </li>
+        )
+      })}
+    </ul>
+  </Container>
+</Layout>

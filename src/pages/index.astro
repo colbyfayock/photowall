@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import { getCldImageUrl } from 'astro-cloudinary/helpers';
+
+import Layout from '@/layouts/Layout.astro';
+import Container from '@/components/Container.astro';
+
+import { getConfig } from '@/lib/config';
+import { getFolderConfig } from '@/lib/cloudinary';
+
+const config = getConfig();
+
+const assets = await getCollection('assets');
+const folders = Array.from(new Set(assets.map(({ data }) => data.folder.replace(`${config.folder}/`, ''))));
+
+const foldersWithConfig = await Promise.all(folders.map(async folder => {
+	const folderConfig = await getFolderConfig(`${config.folder}/${folder}`);
+	return {
+		name: folder,
+		config: folderConfig
+	}
+}));
+---
+
+<Layout title="Photowall">
+	<Container class="mt-12">
+		<ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+			{foldersWithConfig.map((folder) => {
+				const cover = assets.find(({ data }) => data.folder === `${config.folder}/${folder.name}`);
+				let coverUrl;
+
+				if ( cover?.data ) {
+					coverUrl = getCldImageUrl({
+						src: cover.data.public_id,
+						width: 500,
+						height: 500,
+						crop: {
+							type: 'auto',
+							source: true
+						}
+					});
+				}
+
+				return (
+					<li>
+						<a
+							class={`
+								block relative w-full aspect-square font-bold p-5 border-2 border-zinc-200 rounded bg-cover
+								after:absolute after:z-10 after:inset-x-0 after:bottom-0 after:h-20 after:bg-gradient-to-t after:from-[rgba(0,0,0,0.5)] after:to-transparent
+							`}
+							href={`/wall/${folder.name}`}
+							style={{
+								backgroundImage: `url(${coverUrl})`
+							}}
+						>
+							<span class="absolute bottom-3 left-4 z-20 text-white">
+								{ folder.config?.name || folder.name }
+							</span>
+						</a>
+					</li>
+				)
+			})}
+		</ul>
+	</Container>
+</Layout>
