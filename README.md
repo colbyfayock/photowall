@@ -1,4 +1,4 @@
-# Photowall
+# 📸 Photowall
 
 Photo gallery with Astro & Cloudinary
 
@@ -34,9 +34,19 @@ And you should now be running Photobox at http://localhost:4321/!
 
 To start using Photowall, create a new folder called `photowall` in your Cloudinary account.
 
-Inside, create 1 or more folders to create new collections. Drop your images inside each collection to create a new gallery!
+Inside, create 1 or more folders to create new collections. For example:
 
-To further configure your gallery, create a `config.json` file and place it inside of a collection directory, with the structure of:
+```
+- photowall
+-- halloween
+-- new years
+```
+
+Drop your images inside each collection to create a new gallery!
+
+By default, Photowall will utilize the name of the folder, but you can customize the formatting or entire name by creating configuration files.
+
+Create a `config.json` file (in your IDE or just a random file) with the following structure:
 
 ```
 {
@@ -44,3 +54,14 @@ To further configure your gallery, create a `config.json` file and place it insi
   "folder": "<Collection Folder>"
 }
 ```
+
+For example, inside `photowall/halloween`:
+
+```
+{
+  "name": "Spooky Halloween Pics",
+  "folder": "halloween"
+}
+```
+
+Then proceed to upload it to the photowall directory that you want to customize.
